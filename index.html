@@ -396,24 +396,96 @@
       box-shadow: 0 24px 80px rgba(0, 0, 0, 0.6), var(--glow);
       transition: transform 0.15s ease-out;
     }
-    .hero-visual img {
+    .hero-video {
+      position: absolute;
+      inset: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
       display: block;
-      min-height: 420px;
-      opacity: 0.92;
+      z-index: 0;
     }
     .hero-visual::after {
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(135deg, rgba(5, 5, 5, 0.75) 0%, transparent 45%, rgba(5, 5, 5, 0.5) 100%);
+      z-index: 1;
+      background: linear-gradient(135deg, rgba(5, 5, 5, 0.55) 0%, transparent 40%, rgba(5, 5, 5, 0.65) 100%);
       pointer-events: none;
     }
+    .hero-video-btn {
+      position: absolute;
+      bottom: 1rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 3;
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      padding: 0.45rem 0.9rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 204, 0, 0.45);
+      background: rgba(5, 5, 5, 0.75);
+      color: var(--gold);
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+      transition: background 0.2s, color 0.2s;
+    }
+    .hero-video-btn:hover { background: rgba(255, 204, 0, 0.15); color: var(--white); }
+
+    /* poster placements */
+    .poster-brand {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      align-items: center;
+      margin-bottom: 3rem;
+      padding: 0;
+      overflow: hidden;
+      border-radius: var(--radius);
+    }
+    @media (max-width: 768px) { .poster-brand { grid-template-columns: 1fr; } }
+    .poster-brand img {
+      width: 100%;
+      height: 100%;
+      min-height: 280px;
+      object-fit: cover;
+      display: block;
+    }
+    .poster-brand-copy { padding: clamp(1.5rem, 4vw, 2.5rem); }
+    .poster-frame {
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid rgba(255, 204, 0, 0.25);
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5), var(--glow);
+    }
+    .poster-frame img { width: 100%; height: auto; display: block; vertical-align: middle; }
+    .poster-cta {
+      position: relative;
+      overflow: hidden;
+    }
+    .poster-cta-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+    .poster-cta-bg img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.22;
+      filter: saturate(0.85);
+    }
+    .poster-cta-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, var(--black) 0%, rgba(5, 5, 5, 0.92) 50%, var(--black) 100%);
+    }
+    .poster-cta .container { position: relative; z-index: 1; }
     .hero-float {
       position: absolute;
-      z-index: 2;
+      z-index: 3;
       padding: 1rem 1.25rem;
       border-radius: 12px;
       max-width: 200px;
@@ -566,6 +638,9 @@
       transition: transform 0.3s, box-shadow 0.3s;
     }
     .gal-item:hover { transform: scale(1.04); box-shadow: var(--glow); }
+    .gal-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .gal-item-featured { grid-column: 1 / -1; aspect-ratio: 21 / 9; max-height: 420px; }
+    @media (max-width: 600px) { .gal-item-featured { aspect-ratio: 16 / 10; } }
 
     /* contact */
     .contact-grid { display: grid; grid-template-columns: 1fr 1.1fr; gap: 2rem; align-items: start; }
@@ -763,8 +838,11 @@
           <div class="glass stat-card glow-border reveal visible"><strong data-count="10000">0</strong><small>TRANSFORMATIONS</small></div>
         </div>
       </div>
-      <div class="hero-visual reveal visible" id="hero-visual-el" style="position:relative;">
-        <img src="gym.png" alt="The Muscle Bee Fitness — premium branding">
+      <div class="hero-visual reveal visible" id="hero-visual-el">
+        <video class="hero-video" id="hero-video" autoplay muted loop playsinline poster="poster.jpeg" aria-label="The Muscle Bee Fitness gym showcase">
+          <source src="gym_video.mp4" type="video/mp4">
+        </video>
+        <button type="button" class="hero-video-btn" id="hero-video-toggle" aria-pressed="false">🔇 TAP FOR SOUND</button>
         <div class="glass hero-float tl glow-border">
           <strong>24/7</strong>
           <span style="color:var(--muted);font-size:0.8rem;">Access on select plans</span>
@@ -776,6 +854,20 @@
       </div>
     </div>
   </main>
+
+  <section class="section container" id="poster-spotlight" aria-label="Brand poster">
+    <div class="glass glow-border poster-brand reveal">
+      <div class="poster-frame" style="border-radius:0;border:none;box-shadow:none;">
+        <img src="poster.jpeg" alt="The Muscle Bee Fitness — official brand poster">
+      </div>
+      <div class="poster-brand-copy">
+        <p class="font-oswald" style="color:var(--gold);letter-spacing:0.18em;font-size:0.75rem;margin-bottom:0.5rem;">OFFICIAL BRAND POSTER</p>
+        <h2 class="font-bebas" style="font-size:clamp(2rem,4vw,2.75rem);line-height:1.05;margin-bottom:0.75rem;">BLACK. GOLD. <span style="color:var(--gold);">UNSTOPPABLE.</span></h2>
+        <p style="color:var(--muted);margin-bottom:1.25rem;">Step into the hive — premium equipment, elite coaches, and a training culture built for real transformation in JP Nagar.</p>
+        <a class="btn btn-primary" href="tel:+917353577774">CONTACT · 73535 77774</a>
+      </div>
+    </div>
+  </section>
 
   <section class="section stripe" id="why">
     <div class="container">
@@ -798,6 +890,9 @@
     <div class="section-head reveal">
       <h2>OUR STORY</h2>
       <p>From vision to performance — building Bangalore’s most aggressive premium training brand.</p>
+    </div>
+    <div class="poster-frame reveal" style="margin-bottom:2.5rem;max-width:520px;margin-inline:auto;">
+      <img src="poster.jpeg" alt="The Muscle Bee Fitness poster — our story">
     </div>
     <div class="grid-2">
       <div class="reveal">
@@ -926,6 +1021,9 @@
   <section class="section container" id="gallery">
     <div class="section-head reveal"><h2>GALLERY</h2><p>Floor energy, gold accents, and space built for output.</p></div>
     <div class="gallery">
+      <div class="gal-item gal-item-featured reveal">
+        <img src="poster.jpeg" alt="The Muscle Bee Fitness brand poster">
+      </div>
       <div class="gal-item reveal">FLOOR</div>
       <div class="gal-item reveal">IRON</div>
       <div class="gal-item reveal">CARDIO</div>
@@ -935,7 +1033,10 @@
     </div>
   </section>
 
-  <section class="section stripe" id="lead">
+  <section class="section stripe poster-cta" id="lead">
+    <div class="poster-cta-bg" aria-hidden="true">
+      <img src="poster.jpeg" alt="">
+    </div>
     <div class="container text-center reveal" style="text-align:center;">
       <h2 class="font-bebas" style="font-size:clamp(2.2rem,5vw,3.5rem);color:var(--white);margin-bottom:0.75rem;">READY TO OWN THE FLOOR?</h2>
       <p style="color:var(--muted);max-width:560px;margin:0 auto 1.5rem;">7-day trial · assessment · coach intro. <strong style="color:var(--gold);">+91 73535 77774</strong></p>
@@ -1136,6 +1237,18 @@
         hero.addEventListener('mouseleave', function () { hero.style.transform = ''; });
       }
 
+      var heroVid = document.getElementById('hero-video');
+      var heroVidBtn = document.getElementById('hero-video-toggle');
+      if (heroVid && heroVidBtn) {
+        heroVidBtn.addEventListener('click', function () {
+          heroVid.muted = !heroVid.muted;
+          var on = !heroVid.muted;
+          heroVidBtn.setAttribute('aria-pressed', on ? 'true' : 'false');
+          heroVidBtn.textContent = on ? '🔊 SOUND ON' : '🔇 TAP FOR SOUND';
+          if (on) heroVid.play().catch(function () {});
+        });
+      }
+
       var reveals = document.querySelectorAll('.reveal');
       var io = new IntersectionObserver(function (ents) {
         ents.forEach(function (en) {
@@ -1174,7 +1287,7 @@
       if (hs) heroIo.observe(hs);
 
       var links = document.querySelectorAll('.nav-links a[href^="#"]');
-      var sectionIds = ['home', 'why', 'about', 'services', 'classes', 'trainers', 'membership', 'testimonials', 'gallery', 'lead', 'contact'];
+      var sectionIds = ['home', 'poster-spotlight', 'why', 'about', 'services', 'classes', 'trainers', 'membership', 'testimonials', 'gallery', 'lead', 'contact'];
       function setActive() {
         var y = window.scrollY + 160;
         var current = 'home';

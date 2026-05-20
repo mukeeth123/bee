@@ -8,6 +8,8 @@ This project is **static HTML** at the repository root (`index.html` + assets). 
 |------|--------|
 | `index.html` | Main site (entry URL `/`) |
 | `gym.png` | Logo & favicon — **must be committed** |
+| `poster.jpeg` | Brand poster (hero poster frame, gallery, CTA) |
+| `gym_video.mp4` | Hero background video — **commit this file** (can be large; GitHub allows up to 100MB per file) |
 | `*.html` | Redirect stubs → anchors on `index.html` |
 | `vercel.json` | `cleanUrls` / `trailingSlash` (optional polish) |
 | `.gitignore` | Keeps junk out of Git |
