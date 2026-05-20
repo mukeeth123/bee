@@ -1,0 +1,23 @@
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor / IDE
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.swp
+*.swo
+
+# Logs & local env (if you add backend later)
+*.log
+.env
+.env.*
+!.env.example
+
+# Vercel CLI local link (optional)
+.vercel
+
+# Dependencies (if you add Node later)
+node_modules/

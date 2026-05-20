@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The Muscle Bee Fitness — premium gym in JP Nagar, Bangalore. Black & gold luxury fitness. Call 73535 77774.">
+  <title>The Muscle Bee Fitness | Premium Gym Bangalore</title>
+  <link rel="icon" href="gym.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@500;600;700&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --black: #050505;
+      --charcoal: #111111;
+      --gold: #ffcc00;
+      --gold-2: #f5b301;
+      --white: #ffffff;
+      --muted: rgba(255, 255, 255, 0.72);
+      --nav-h: 76px;
+      --radius: 14px;
+      --glow: 0 0 28px rgba(255, 204, 0, 0.35);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Poppins', system-ui, sans-serif;
+      background: var(--black);
+      color: var(--white);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+    h1, h2, h3, .font-bebas { font-family: 'Bebas Neue', Impact, sans-serif; letter-spacing: 0.04em; font-weight: 400; }
+    .font-oswald { font-family: 'Oswald', sans-serif; letter-spacing: 0.06em; }
+
+    /* layered backgrounds */
+    .page-bg {
+      position: fixed;
+      inset: 0;
+      z-index: -3;
+      background:
+        radial-gradient(ellipse 120% 80% at 50% -20%, rgba(255, 204, 0, 0.12), transparent 55%),
+        radial-gradient(ellipse 80% 50% at 100% 50%, rgba(245, 179, 1, 0.06), transparent 50%),
+        radial-gradient(ellipse 60% 40% at 0% 80%, rgba(255, 204, 0, 0.05), transparent 45%),
+        linear-gradient(180deg, #0a0a0a 0%, var(--black) 40%, #080808 100%);
+    }
+    .hex-pattern {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      opacity: 0.22;
+      background-image:
+        repeating-linear-gradient(60deg, rgba(255, 204, 0, 0.07) 0 1px, transparent 1px 46px),
+        repeating-linear-gradient(-60deg, rgba(255, 204, 0, 0.07) 0 1px, transparent 1px 46px);
+      pointer-events: none;
+    }
+    #particles {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .particle {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: var(--gold);
+      opacity: 0.35;
+      animation: float-p 14s ease-in-out infinite;
+    }
+    @keyframes float-p {
+      0%, 100% { transform: translate(0, 0); opacity: 0.2; }
+      50% { transform: translate(12px, -40px); opacity: 0.55; }
+    }
+
+    .scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      width: 0%;
+      z-index: 1001;
+      background: linear-gradient(90deg, var(--gold-2), var(--gold));
+      box-shadow: var(--glow);
+    }
+
+    /* loader */
+    #loader {
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 1.25rem;
+      background: radial-gradient(circle at center, #1a1400 0%, var(--black) 70%);
+      transition: opacity 0.6s ease, visibility 0.6s ease;
+    }
+    #loader.hide { opacity: 0; visibility: hidden; pointer-events: none; }
+    #loader img { width: min(200px, 45vw); height: auto; filter: drop-shadow(0 0 24px rgba(255, 204, 0, 0.5)); }
+    .loader-bar {
+      width: min(240px, 60vw);
+      height: 4px;
+      border-radius: 4px;
+      background: #222;
+      overflow: hidden;
+    }
+    .loader-bar span {
+      display: block;
+      height: 100%;
+      width: 40%;
+      background: linear-gradient(90deg, var(--gold-2), var(--gold));
+      animation: load-slide 1s ease-in-out infinite;
+    }
+    @keyframes load-slide { 0% { transform: translateX(-100%); } 100% { transform: translateX(350%); } }
+
+    .container { width: min(1200px, 100% - 2rem); margin-inline: auto; }
+    .section { padding: clamp(3rem, 6vw, 5.5rem) 0; position: relative; }
+    .section-head {
+      text-align: center;
+      margin-bottom: clamp(2rem, 4vw, 3rem);
+    }
+    .section-head h2 {
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      background: linear-gradient(135deg, var(--gold) 0%, var(--gold-2) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 0 0 40px rgba(255, 204, 0, 0.25);
+    }
+    .section-head p { color: var(--muted); max-width: 640px; margin: 0.75rem auto 0; font-size: 1.05rem; }
+
+    /* nav */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      height: var(--nav-h);
+      display: flex;
+      align-items: center;
+      background: rgba(5, 5, 5, 0.82);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(255, 204, 0, 0.18);
+      transition: box-shadow 0.3s;
+    }
+    nav.scrolled { box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6); }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      width: 100%;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      text-decoration: none;
+      color: var(--white);
+    }
+    .brand img { height: 48px; width: auto; display: block; }
+    @media (max-width: 480px) { .brand img { height: 40px; } }
+    .brand span {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.35rem;
+      letter-spacing: 0.08em;
+      color: var(--gold);
+      text-shadow: 0 0 20px rgba(255, 204, 0, 0.35);
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.35rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.85rem;
+      text-decoration: none;
+      color: var(--muted);
+      letter-spacing: 0.12em;
+      padding-bottom: 4px;
+      border-bottom: 2px solid transparent;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--gold); border-bottom-color: var(--gold); }
+    .nav-phone {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.9rem;
+      color: var(--gold);
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .nav-phone:hover { text-shadow: var(--glow); }
+    .nav-actions { display: flex; align-items: center; gap: 0.75rem; }
+    .menu-btn {
+      display: none;
+      background: none;
+      border: 1px solid rgba(255, 204, 0, 0.35);
+      color: var(--gold);
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+    }
+    @media (max-width: 1024px) {
+      .nav-links, .nav-phone { display: none; }
+      .menu-btn { display: flex; }
+    }
+
+    /* mobile drawer */
+    .drawer {
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      background: rgba(0, 0, 0, 0.65);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s, visibility 0.3s;
+    }
+    .drawer.open { opacity: 1; visibility: visible; }
+    .drawer-panel {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: min(320px, 88vw);
+      height: 100%;
+      background: linear-gradient(165deg, #141414 0%, var(--black) 100%);
+      border-left: 1px solid rgba(255, 204, 0, 0.25);
+      padding: calc(var(--nav-h) + 1rem) 1.5rem 2rem;
+      transform: translateX(100%);
+      transition: transform 0.35s ease;
+      box-shadow: -12px 0 48px rgba(0, 0, 0, 0.5);
+    }
+    .drawer.open .drawer-panel { transform: translateX(0); }
+    .drawer a {
+      display: block;
+      font-family: 'Oswald', sans-serif;
+      letter-spacing: 0.1em;
+      color: var(--white);
+      text-decoration: none;
+      padding: 0.85rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .drawer a:hover { color: var(--gold); }
+    .drawer-logo { margin-bottom: 1.5rem; text-align: center; }
+    .drawer-logo img { max-width: 140px; height: auto; filter: drop-shadow(0 0 16px rgba(255, 204, 0, 0.4)); }
+    .drawer .nav-phone { display: flex; margin-top: 1rem; justify-content: center; font-size: 1.1rem; }
+
+    /* buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      font-family: 'Oswald', sans-serif;
+      letter-spacing: 0.1em;
+      font-size: 0.9rem;
+      padding: 0.85rem 1.5rem;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--gold) 0%, var(--gold-2) 100%);
+      color: var(--black);
+      font-weight: 700;
+      box-shadow: 0 8px 28px rgba(255, 204, 0, 0.35);
+    }
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 14px 40px rgba(255, 204, 0, 0.5);
+    }
+    .btn-outline {
+      background: transparent;
+      color: var(--gold);
+      border: 2px solid rgba(255, 204, 0, 0.55);
+    }
+    .btn-outline:hover {
+      background: rgba(255, 204, 0, 0.1);
+      transform: translateY(-2px);
+    }
+
+    /* glass cards */
+    .glass {
+      background: rgba(17, 17, 17, 0.65);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 204, 0, 0.15);
+      border-radius: var(--radius);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+    }
+    .glow-border {
+      position: relative;
+    }
+    .glow-border::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: inherit;
+      padding: 1px;
+      background: linear-gradient(135deg, rgba(255, 204, 0, 0.5), transparent 40%, rgba(245, 179, 1, 0.4));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+
+    /* hero */
+    #home {
+      min-height: 100vh;
+      padding-top: var(--nav-h);
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(2rem, 5vw, 4rem);
+      align-items: center;
+      padding: clamp(2rem, 5vw, 4rem) 0 4rem;
+    }
+    @media (max-width: 960px) {
+      .hero-grid { grid-template-columns: 1fr; text-align: center; }
+    }
+    .hero-badge {
+      display: inline-block;
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      color: var(--gold);
+      border: 1px solid rgba(255, 204, 0, 0.35);
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      margin-bottom: 1rem;
+    }
+    .hero h1 {
+      font-size: clamp(2.8rem, 7vw, 5.2rem);
+      line-height: 1.02;
+      color: var(--white);
+      text-shadow: 0 0 60px rgba(255, 204, 0, 0.15);
+    }
+    .hero h1 span {
+      display: block;
+      background: linear-gradient(90deg, var(--gold), var(--gold-2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-lead { color: var(--muted); font-size: 1.1rem; max-width: 540px; margin: 1.25rem 0 1.75rem; }
+    @media (max-width: 960px) { .hero-lead { margin-inline: auto; } }
+    .hero-cta { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+    @media (max-width: 960px) { .hero-cta { justify-content: center; } }
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.75rem;
+      margin-top: 2rem;
+    }
+    @media (max-width: 640px) { .hero-stats { grid-template-columns: repeat(2, 1fr); } }
+    .stat-card {
+      padding: 1rem;
+      text-align: center;
+      border-radius: var(--radius);
+    }
+    .stat-card strong {
+      display: block;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem;
+      color: var(--gold);
+      line-height: 1.1;
+    }
+    .stat-card small { color: var(--muted); font-size: 0.75rem; letter-spacing: 0.04em; }
+
+    .hero-visual {
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
+      min-height: 420px;
+      background: var(--charcoal);
+      border: 1px solid rgba(255, 204, 0, 0.2);
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.6), var(--glow);
+      transition: transform 0.15s ease-out;
+    }
+    .hero-visual img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      min-height: 420px;
+      opacity: 0.92;
+    }
+    .hero-visual::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(5, 5, 5, 0.75) 0%, transparent 45%, rgba(5, 5, 5, 0.5) 100%);
+      pointer-events: none;
+    }
+    .hero-float {
+      position: absolute;
+      z-index: 2;
+      padding: 1rem 1.25rem;
+      border-radius: 12px;
+      max-width: 200px;
+      font-size: 0.85rem;
+    }
+    .hero-float.tl { top: 1.25rem; left: 1.25rem; }
+    .hero-float.br { bottom: 1.25rem; right: 1.25rem; text-align: right; }
+    .hero-float strong { color: var(--gold); font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; }
+
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* grids */
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+    @media (max-width: 900px) { .grid-3 { grid-template-columns: 1fr; } }
+    @media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } }
+
+    .card-pad { padding: 1.75rem; transition: transform 0.3s, box-shadow 0.3s; }
+    .card-pad:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 50px rgba(255, 204, 0, 0.12);
+    }
+    .icon-gold {
+      width: 52px;
+      height: 52px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, rgba(255, 204, 0, 0.2), rgba(245, 179, 1, 0.08));
+      border: 1px solid rgba(255, 204, 0, 0.35);
+      color: var(--gold);
+      margin-bottom: 1rem;
+      font-size: 1.4rem;
+    }
+    .card-pad h3 { font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--white); }
+    .card-pad p { color: var(--muted); font-size: 0.95rem; }
+
+    .stripe {
+      background: linear-gradient(180deg, rgba(17, 17, 17, 0.95), var(--black));
+      border-block: 1px solid rgba(255, 204, 0, 0.1);
+    }
+
+    /* timeline */
+    .timeline { position: relative; max-width: 720px; margin: 0 auto; padding-left: 1.5rem; }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 6px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(var(--gold), var(--gold-2));
+      opacity: 0.5;
+    }
+    .tl-item { position: relative; padding: 0 0 1.75rem 1.5rem; }
+    .tl-item::before {
+      content: '';
+      position: absolute;
+      left: -1px;
+      top: 4px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--gold);
+      box-shadow: 0 0 16px var(--gold);
+    }
+    .tl-item h4 { color: var(--gold); font-family: 'Oswald', sans-serif; margin-bottom: 0.35rem; }
+
+    /* schedule */
+    .schedule-wrap { overflow-x: auto; }
+    table.schedule { width: 100%; border-collapse: collapse; min-width: 600px; font-size: 0.85rem; }
+    .schedule th, .schedule td {
+      padding: 0.65rem;
+      text-align: center;
+      border: 1px solid rgba(255, 204, 0, 0.15);
+    }
+    .schedule th { background: linear-gradient(135deg, rgba(255, 204, 0, 0.25), rgba(245, 179, 1, 0.12)); font-family: 'Oswald', sans-serif; }
+    .schedule td.time { color: var(--gold); font-weight: 600; }
+
+    /* trainers */
+    .trainer-card {
+      overflow: hidden;
+      border-radius: var(--radius);
+      transition: transform 0.35s;
+    }
+    .trainer-card:hover { transform: scale(1.03); }
+    .trainer-ph {
+      height: 220px;
+      background: linear-gradient(145deg, #1a1a1a, #2a2208);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      color: rgba(255, 204, 0, 0.2);
+      border-bottom: 1px solid rgba(255, 204, 0, 0.15);
+    }
+    .trainer-body { padding: 1.25rem; }
+    .trainer-body h3 { font-size: 1.35rem; }
+    .trainer-role { color: var(--gold); font-size: 0.8rem; font-family: 'Oswald', sans-serif; letter-spacing: 0.08em; margin: 0.25rem 0 0.5rem; }
+
+    /* pricing */
+    .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; align-items: start; }
+    @media (max-width: 900px) { .pricing-grid { grid-template-columns: 1fr; } }
+    .price-card { padding: 2rem 1.5rem; text-align: center; position: relative; }
+    .price-card.featured {
+      transform: scale(1.02);
+      border-color: rgba(255, 204, 0, 0.45);
+      box-shadow: 0 0 48px rgba(255, 204, 0, 0.15);
+    }
+    .badge-pop {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(90deg, var(--gold), var(--gold-2));
+      color: var(--black);
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      padding: 0.4rem 1rem;
+      border-radius: 999px;
+    }
+    .price { font-family: 'Bebas Neue', sans-serif; font-size: 3rem; color: var(--gold); line-height: 1; margin: 1rem 0; }
+    .price small { font-size: 1rem; color: var(--muted); font-family: 'Poppins', sans-serif; }
+    .price-card ul { list-style: none; text-align: left; margin: 1.25rem 0; font-size: 0.9rem; color: var(--muted); }
+    .price-card li { padding: 0.4rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.06); }
+    .price-card li::before { content: '✓'; color: var(--gold); margin-right: 0.5rem; }
+
+    /* testimonials */
+    .quote { font-size: 3rem; line-height: 0; color: var(--gold); opacity: 0.35; font-family: Georgia, serif; }
+    .testimonial { padding: 1.75rem; }
+    .testimonial p { font-style: italic; color: var(--muted); margin: 0.75rem 0 1rem; }
+
+    /* gallery */
+    .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1rem; }
+    .gal-item {
+      aspect-ratio: 1;
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid rgba(255, 204, 0, 0.2);
+      background: linear-gradient(145deg, #1a1a1a, #221a00);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255, 204, 0, 0.25);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .gal-item:hover { transform: scale(1.04); box-shadow: var(--glow); }
+
+    /* contact */
+    .contact-grid { display: grid; grid-template-columns: 1fr 1.1fr; gap: 2rem; align-items: start; }
+    @media (max-width: 900px) { .contact-grid { grid-template-columns: 1fr; } }
+    form .field { margin-bottom: 1rem; }
+    form label { display: block; font-size: 0.8rem; color: var(--gold); margin-bottom: 0.35rem; font-family: 'Oswald', sans-serif; letter-spacing: 0.06em; }
+    input, select, textarea {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 204, 0, 0.25);
+      background: rgba(10, 10, 10, 0.9);
+      color: var(--white);
+      font-family: inherit;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(255, 204, 0, 0.15);
+    }
+
+    footer {
+      border-top: 1px solid rgba(255, 204, 0, 0.2);
+      padding: 3rem 0 2rem;
+      background: #020202;
+    }
+    .foot-grid { display: grid; grid-template-columns: 1.2fr repeat(3, 1fr); gap: 2rem; }
+    @media (max-width: 900px) { .foot-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 520px) { .foot-grid { grid-template-columns: 1fr; } }
+    footer a { color: var(--muted); text-decoration: none; }
+    footer a:hover { color: var(--gold); }
+    .foot-logo img { height: 56px; width: auto; margin-bottom: 0.75rem; filter: drop-shadow(0 0 12px rgba(255, 204, 0, 0.35)); }
+
+    /* modals */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1500;
+      background: rgba(0, 0, 0, 0.75);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    .modal-overlay.show { display: flex; }
+    .modal-box {
+      width: min(440px, 100%);
+      padding: 2rem;
+      position: relative;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      color: var(--white);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    /* whatsapp + sticky */
+    .wa-float {
+      position: fixed;
+      bottom: 5.5rem;
+      right: 1.25rem;
+      z-index: 900;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #25d366, #128c7e);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 24px rgba(37, 211, 102, 0.45);
+      text-decoration: none;
+      font-size: 1.75rem;
+      transition: transform 0.25s;
+    }
+    .wa-float:hover { transform: scale(1.08); }
+    .sticky-cta {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 890;
+      display: none;
+      gap: 0.5rem;
+      padding: 0.6rem 0.75rem;
+      background: rgba(5, 5, 5, 0.95);
+      border-top: 1px solid rgba(255, 204, 0, 0.25);
+      backdrop-filter: blur(10px);
+    }
+    @media (max-width: 768px) {
+      .sticky-cta { display: flex; }
+      body { padding-bottom: 64px; }
+    }
+    .sticky-cta a, .sticky-cta button {
+      flex: 1;
+      font-size: 0.72rem;
+      padding: 0.65rem 0.35rem;
+      text-align: center;
+    }
+
+    .light-streak {
+      position: absolute;
+      width: 140%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 204, 0, 0.4), transparent);
+      top: 30%;
+      left: -20%;
+      transform: rotate(-8deg);
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
+    main[id], section[id] { scroll-margin-top: calc(var(--nav-h) + 12px); }
+    @media (max-width: 900px) {
+      .price-card.featured { transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-bg" aria-hidden="true"></div>
+  <div class="hex-pattern" aria-hidden="true"></div>
+  <div id="particles" aria-hidden="true"></div>
+  <div class="scroll-progress" id="scroll-progress"></div>
+
+  <div id="loader" role="status" aria-live="polite">
+    <img src="gym.png" alt="The Muscle Bee Fitness">
+    <div class="loader-bar"><span></span></div>
+    <p class="font-oswald" style="color:var(--gold);letter-spacing:0.2em;font-size:0.75rem;">LOADING HIVE</p>
+  </div>
+
+  <nav id="navbar">
+    <div class="container nav-inner">
+      <a class="brand" href="#home">
+        <img src="gym.png" alt="The Muscle Bee Fitness logo">
+        <span>MUSCLE BEE</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#home" class="active">HOME</a></li>
+        <li><a href="#about">ABOUT</a></li>
+        <li><a href="#services">SERVICES</a></li>
+        <li><a href="#classes">CLASSES</a></li>
+        <li><a href="#trainers">TRAINERS</a></li>
+        <li><a href="#membership">MEMBERSHIP</a></li>
+        <li><a href="#testimonials">REVIEWS</a></li>
+        <li><a href="#gallery">GALLERY</a></li>
+        <li><a href="#contact">CONTACT</a></li>
+      </ul>
+      <a class="nav-phone" href="tel:+917353577774">📞 +91 73535 77774</a>
+      <div class="nav-actions">
+        <button type="button" class="btn btn-primary" data-open="join">JOIN NOW</button>
+        <button type="button" class="menu-btn" id="menu-open" aria-label="Open menu">☰</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="drawer" id="drawer" aria-hidden="true">
+    <div class="drawer-panel" id="drawer-panel">
+      <div class="drawer-logo"><img src="gym.png" alt=""></div>
+      <a href="#home">HOME</a>
+      <a href="#about">ABOUT</a>
+      <a href="#services">SERVICES</a>
+      <a href="#classes">CLASSES</a>
+      <a href="#trainers">TRAINERS</a>
+      <a href="#membership">MEMBERSHIP</a>
+      <a href="#testimonials">REVIEWS</a>
+      <a href="#gallery">GALLERY</a>
+      <a href="#contact">CONTACT</a>
+      <a class="nav-phone" href="tel:+917353577774">📞 +91 73535 77774</a>
+      <button type="button" class="btn btn-primary" style="width:100%;margin-top:1rem;" data-open="join">JOIN NOW</button>
+    </div>
+  </div>
+
+  <main id="home">
+    <div class="light-streak" aria-hidden="true"></div>
+    <div class="container hero-grid">
+      <div class="hero">
+        <span class="hero-badge">JP NAGAR · BANGALORE</span>
+        <h1>TRANSFORM<br><span>BEYOND LIMITS</span></h1>
+        <p class="hero-lead">Elite coaching, cinematic energy, and a luxury black &amp; gold training floor built for serious results. <strong style="color:var(--gold);">The Muscle Bee Fitness</strong> — where discipline meets dominance.</p>
+        <div class="hero-cta">
+          <button type="button" class="btn btn-primary" data-open="join">JOIN NOW</button>
+          <button type="button" class="btn btn-outline" data-open="trial">BOOK FREE TRIAL</button>
+          <a class="btn btn-outline" href="tel:+917353577774">CONTACT NOW · 73535 77774</a>
+        </div>
+        <div class="hero-stats">
+          <div class="glass stat-card glow-border reveal visible"><strong data-count="5000">0</strong><small>ACTIVE MEMBERS</small></div>
+          <div class="glass stat-card glow-border reveal visible"><strong data-count="50">0</strong><small>EXPERT TRAINERS</small></div>
+          <div class="glass stat-card glow-border reveal visible"><strong data-count="100">0</strong><small>CLASSES / WEEK</small></div>
+          <div class="glass stat-card glow-border reveal visible"><strong data-count="10000">0</strong><small>TRANSFORMATIONS</small></div>
+        </div>
+      </div>
+      <div class="hero-visual reveal visible" id="hero-visual-el" style="position:relative;">
+        <img src="gym.png" alt="The Muscle Bee Fitness — premium branding">
+        <div class="glass hero-float tl glow-border">
+          <strong>24/7</strong>
+          <span style="color:var(--muted);font-size:0.8rem;">Access on select plans</span>
+        </div>
+        <div class="glass hero-float br glow-border">
+          <span style="color:var(--muted);font-size:0.75rem;">CALL THE HIVE</span>
+          <strong style="font-size:1.25rem;">73535 77774</strong>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <section class="section stripe" id="why">
+    <div class="container">
+      <div class="section-head reveal">
+        <h2>WHY THE MUSCLE BEE</h2>
+        <p>World-class equipment, certified coaches, and a hive that pushes you harder — every single session.</p>
+      </div>
+      <div class="grid-3">
+        <article class="glass card-pad glow-border reveal"><div class="icon-gold">🏋</div><h3>EQUIPMENT</h3><p>Imported strength lines, dedicated lifting zones, and precision cardio for elite output.</p></article>
+        <article class="glass card-pad glow-border reveal"><div class="icon-gold">⚡</div><h3>COACHING</h3><p>Program design backed by data — form, intensity, and recovery dialled for your goal.</p></article>
+        <article class="glass card-pad glow-border reveal"><div class="icon-gold">◆</div><h3>HOLISTIC</h3><p>Nutrition, mobility, and mindset layered in so results stick long after you leave the floor.</p></article>
+        <article class="glass card-pad glow-border reveal"><div class="icon-gold">◇</div><h3>COMMUNITY</h3><p>High-accountability culture — train beside people who refuse average.</p></article>
+        <article class="glass card-pad glow-border reveal"><div class="icon-gold">✦</div><h3>AI SUPPORT</h3><p>Smart tracking and workout intelligence to keep progression relentless.</p></article>
+        <article class="glass card-pad glow-border reveal"><div class="icon-gold">★</div><h3>RESULTS</h3><p>Thousands of transformations — we measure success in measurable wins.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section container" id="about">
+    <div class="section-head reveal">
+      <h2>OUR STORY</h2>
+      <p>From vision to performance — building Bangalore’s most aggressive premium training brand.</p>
+    </div>
+    <div class="grid-2">
+      <div class="reveal">
+        <h3 class="font-oswald" style="color:var(--gold);font-size:1.1rem;letter-spacing:0.15em;margin-bottom:0.75rem;">MISSION</h3>
+        <p style="color:var(--muted);margin-bottom:1rem;">We exist to forge stronger humans in an environment that feels expensive, intentional, and electric. No noise — just work.</p>
+        <ul style="color:var(--muted);list-style:none;">
+          <li style="margin:0.5rem 0;"><span style="color:var(--gold);">✓</span> Personalised programming</li>
+          <li style="margin:0.5rem 0;"><span style="color:var(--gold);">✓</span> Internationally certified coaches</li>
+          <li style="margin:0.5rem 0;"><span style="color:var(--gold);">✓</span> Holistic performance stack</li>
+          <li style="margin:0.5rem 0;"><span style="color:var(--gold);">✓</span> Cutting-edge floor &amp; recovery</li>
+        </ul>
+      </div>
+      <div class="glass glow-border card-pad reveal" style="background:linear-gradient(145deg,rgba(255,204,0,0.12),rgba(17,17,17,0.9));">
+        <h3 class="font-bebas" style="font-size:2rem;color:var(--gold);margin-bottom:0.75rem;">THE BEE PHILOSOPHY</h3>
+        <p style="color:var(--white);font-size:1.05rem;">“Like bees building something extraordinary — collective discipline, individual excellence, unstoppable momentum.”</p>
+        <p style="color:var(--muted);margin-top:1rem;font-size:0.9rem;">— Founder’s vision</p>
+      </div>
+    </div>
+    <div style="margin-top:3rem;" class="reveal">
+      <h3 class="section-head" style="margin-bottom:2rem;"><span class="font-bebas" style="font-size:clamp(2rem,4vw,3rem);background:linear-gradient(135deg,var(--gold),var(--gold-2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">OUR JOURNEY</span></h3>
+      <div class="timeline">
+        <div class="tl-item"><h4>2015 — VISION BORN</h4><p style="color:var(--muted);">Premium quality over mass-market volume — the blueprint for The Muscle Bee.</p></div>
+        <div class="tl-item"><h4>2016 — DOORS OPEN</h4><p style="color:var(--muted);">JP Nagar flagship with elite equipment and uncompromising coaching standards.</p></div>
+        <div class="tl-item"><h4>2020 — DIGITAL EDGE</h4><p style="color:var(--muted);">Hybrid training and smarter tracking for members who never switch off.</p></div>
+        <div class="tl-item"><h4>2026 — DOMINANCE MODE</h4><p style="color:var(--muted);">Expanded floor, louder results, and a black &amp; gold standard across Bangalore.</p></div>
+      </div>
+    </div>
+    <div class="grid-3" style="margin-top:3rem;">
+      <div class="glass card-pad text-center reveal glow-border"><span class="font-bebas" style="font-size:2.5rem;color:var(--gold);">5000+</span><p class="font-oswald" style="color:var(--muted);font-size:0.8rem;letter-spacing:0.12em;">MEMBERS</p></div>
+      <div class="glass card-pad text-center reveal glow-border"><span class="font-bebas" style="font-size:2.5rem;color:var(--gold);">50+</span><p class="font-oswald" style="color:var(--muted);font-size:0.8rem;letter-spacing:0.12em;">COACHES</p></div>
+      <div class="glass card-pad text-center reveal glow-border"><span class="font-bebas" style="font-size:2.5rem;color:var(--gold);">10K+</span><p class="font-oswald" style="color:var(--muted);font-size:0.8rem;letter-spacing:0.12em;">TRANSFORMATIONS</p></div>
+    </div>
+  </section>
+
+  <section class="section stripe" id="services">
+    <div class="container">
+      <div class="section-head reveal"><h2>SERVICES</h2><p>Every pillar of performance — under one roof, one brand, one standard.</p></div>
+      <div class="grid-3">
+        <article class="glass card-pad reveal"><div class="icon-gold">⬡</div><h3>STRENGTH</h3><p>Progressive overload, compound mastery, and power development for serious lifters.</p></article>
+        <article class="glass card-pad reveal"><div class="icon-gold">🔥</div><h3>FAT LOSS</h3><p>Metabolic conditioning, resistance training, and nutrition alignment for visible change.</p></article>
+        <article class="glass card-pad reveal"><div class="icon-gold">⛰</div><h3>CROSS / FUNCTIONAL</h3><p>High-skill work, engine building, and athletic durability for real-world strength.</p></article>
+        <article class="glass card-pad reveal"><div class="icon-gold">⚙</div><h3>HIIT</h3><p>Time-efficient brutality — spike output, torch calories, build mental grit.</p></article>
+        <article class="glass card-pad reveal"><div class="icon-gold">✧</div><h3>PERSONAL TRAINING</h3><p>1:1 accountability, custom blocks, and rapid technical upgrades.</p></article>
+        <article class="glass card-pad reveal"><div class="icon-gold">❖</div><h3>NUTRITION</h3><p>Macros, meal systems, and supplement strategy aligned to your training phase.</p></article>
+        <article class="glass card-pad reveal"><div class="icon-gold">◎</div><h3>RECOVERY</h3><p>Mobility, fascial work, and deload intelligence so you can train harder, longer.</p></article>
+        <article class="glass card-pad reveal"><div class="icon-gold">✶</div><h3>WOMEN’S FITNESS</h3><p>Specialised programming and coaching environments built for strength and confidence.</p></article>
+        <article class="glass card-pad reveal"><div class="icon-gold">⎔</div><h3>AI-ASSISTED TRAINING</h3><p>Smarter tracking and adaptive plans — tech that amplifies human coaching.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section container" id="classes">
+    <div class="section-head reveal"><h2>CLASS SCHEDULE</h2><p>100+ weekly sessions — lock your slot and own the hour.</p></div>
+    <div class="glass glow-border schedule-wrap reveal" style="padding:1rem;">
+      <table class="schedule">
+        <thead><tr><th>Time</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr></thead>
+        <tbody>
+          <tr><td class="time">6:00</td><td>HIIT</td><td>Strength</td><td>HIIT</td><td>Strength</td><td>HIIT</td><td>Power</td></tr>
+          <tr><td class="time">8:00</td><td>Yoga</td><td>Spin</td><td>Yoga</td><td>Spin</td><td>Yoga</td><td>MetCon</td></tr>
+          <tr><td class="time">18:00</td><td>Cross</td><td>Boxing</td><td>Cross</td><td>Boxing</td><td>Cross</td><td>Open Gym</td></tr>
+          <tr><td class="time">20:00</td><td>Core</td><td>Mobility</td><td>Core</td><td>Mobility</td><td>Core</td><td>Recovery</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="text-align:center;margin-top:1.5rem;color:var(--muted);" class="reveal">Questions? <a href="tel:+917353577774" style="color:var(--gold);">Call +91 73535 77774</a></p>
+  </section>
+
+  <section class="section stripe" id="trainers">
+    <div class="container">
+      <div class="section-head reveal"><h2>ELITE TRAINERS</h2><p>International certifications. Battle-tested programming. Zero excuses on the floor.</p></div>
+      <div class="grid-3">
+        <article class="glass trainer-card reveal glow-border"><div class="trainer-ph">👤</div><div class="trainer-body"><h3>RAJ SHARMA</h3><p class="trainer-role">HEAD COACH · STRENGTH</p><p style="color:var(--muted);font-size:0.9rem;">15+ yrs · NASM-CPT · Power &amp; athletic performance.</p></div></article>
+        <article class="glass trainer-card reveal glow-border"><div class="trainer-ph">👤</div><div class="trainer-body"><h3>PRIYA VERMA</h3><p class="trainer-role">WOMEN’S FITNESS</p><p style="color:var(--muted);font-size:0.9rem;">12+ yrs · ACE-CPT · Strength &amp; nutrition for women.</p></div></article>
+        <article class="glass trainer-card reveal glow-border"><div class="trainer-ph">👤</div><div class="trainer-body"><h3>ARJUN PATEL</h3><p class="trainer-role">CROSS · FUNCTIONAL</p><p style="color:var(--muted);font-size:0.9rem;">10+ yrs · CrossFit L2 · Engine &amp; skill development.</p></div></article>
+        <article class="glass trainer-card reveal glow-border"><div class="trainer-ph">👤</div><div class="trainer-body"><h3>NEHA KUMAR</h3><p class="trainer-role">YOGA · MOBILITY</p><p style="color:var(--muted);font-size:0.9rem;">8+ yrs · E-RYT 500 · Flexibility that supports heavy training.</p></div></article>
+        <article class="glass trainer-card reveal glow-border"><div class="trainer-ph">👤</div><div class="trainer-body"><h3>VIKRAM SINGH</h3><p class="trainer-role">HIIT · CARDIO</p><p style="color:var(--muted);font-size:0.9rem;">14+ yrs · Conditioning protocols for rapid body recomposition.</p></div></article>
+        <article class="glass trainer-card reveal glow-border"><div class="trainer-ph">👤</div><div class="trainer-body"><h3>ANJALI DESAI</h3><p class="trainer-role">NUTRITION</p><p style="color:var(--muted);font-size:0.9rem;">9+ yrs · Sports nutritionist · Fuel for performance &amp; life.</p></div></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section container" id="membership">
+    <div class="section-head reveal"><h2>MEMBERSHIP</h2><p>Pick your intensity. Upgrade anytime. Speak to us on <a href="tel:+917353577774" style="color:var(--gold);">73535 77774</a>.</p></div>
+    <div class="pricing-grid">
+      <div class="glass price-card reveal glow-border">
+        <h3 class="font-bebas" style="font-size:1.75rem;">BASIC</h3>
+        <p style="color:var(--muted);font-size:0.85rem;">Beginners / consistency</p>
+        <div class="price">₹2,999<small>/mo</small></div>
+        <button type="button" class="btn btn-primary" style="width:100%;" data-open="join">SELECT</button>
+        <ul><li>24/7 gym access</li><li>Full floor equipment</li><li>4× group classes / week</li><li>Fitness assessment</li></ul>
+      </div>
+      <div class="glass price-card featured reveal glow-border">
+        <span class="badge-pop">MOST POPULAR</span>
+        <h3 class="font-bebas" style="font-size:1.75rem;margin-top:0.5rem;">PRO</h3>
+        <p style="color:var(--muted);font-size:0.85rem;">Serious training</p>
+        <div class="price">₹4,999<small>/mo</small></div>
+        <button type="button" class="btn btn-primary" style="width:100%;" data-open="join">SELECT</button>
+        <ul><li>Everything in Basic</li><li>Unlimited classes</li><li>2× PT / month</li><li>Nutrition consult</li><li>Progress tracking</li></ul>
+      </div>
+      <div class="glass price-card reveal glow-border">
+        <h3 class="font-bebas" style="font-size:1.75rem;">ELITE</h3>
+        <p style="color:var(--muted);font-size:0.85rem;">Athletes &amp; executives</p>
+        <div class="price">₹7,999<small>/mo</small></div>
+        <button type="button" class="btn btn-primary" style="width:100%;" data-open="join">SELECT</button>
+        <ul><li>All Pro benefits</li><li>Priority booking</li><li>4× PT / month</li><li>Recovery suite access</li><li>Concierge support</li></ul>
+      </div>
+    </div>
+    <div class="glass glow-border card-pad reveal" style="margin-top:2rem;display:flex;flex-wrap:wrap;align-items:center;gap:1.5rem;justify-content:space-between;">
+      <img src="gym.png" alt="" style="height:64px;width:auto;filter:drop-shadow(0 0 12px rgba(255,204,0,0.4));">
+      <div><p class="font-oswald" style="color:var(--gold);letter-spacing:0.12em;font-size:0.85rem;">MEMBER CARD · DIGITAL + PHYSICAL</p><p style="color:var(--muted);font-size:0.9rem;">Gold-accent black card issued on activation.</p></div>
+      <a class="btn btn-outline" href="tel:+917353577774">CALL 73535 77774</a>
+    </div>
+  </section>
+
+  <section class="section stripe" id="testimonials">
+    <div class="container">
+      <div class="section-head reveal"><h2>TESTIMONIALS</h2><p>Real members. Real intensity. Real outcomes.</p></div>
+      <div class="grid-3">
+        <blockquote class="glass testimonial reveal glow-border"><span class="quote">“</span><p>This isn’t a ‘gym selfie’ place — it’s a performance floor. Coaches actually care about numbers.</p><footer class="font-oswald" style="color:var(--gold);font-size:0.85rem;">— KARAN M. · ELITE</footer></blockquote>
+        <blockquote class="glass testimonial reveal glow-border"><span class="quote">“</span><p>Lost 14kg in 12 weeks with their fat-loss stack + nutrition. The vibe is dark luxury — I love it.</p><footer class="font-oswald" style="color:var(--gold);font-size:0.85rem;">— SHREYA L. · PRO</footer></blockquote>
+        <blockquote class="glass testimonial reveal glow-border"><span class="quote">“</span><p>Best equipment in JP Nagar. Training feels cinematic — lights, energy, and serious lifters around you.</p><footer class="font-oswald" style="color:var(--gold);font-size:0.85rem;">— ADITYA R. · BASIC</footer></blockquote>
+      </div>
+    </div>
+  </section>
+
+  <section class="section container" id="gallery">
+    <div class="section-head reveal"><h2>GALLERY</h2><p>Floor energy, gold accents, and space built for output.</p></div>
+    <div class="gallery">
+      <div class="gal-item reveal">FLOOR</div>
+      <div class="gal-item reveal">IRON</div>
+      <div class="gal-item reveal">CARDIO</div>
+      <div class="gal-item reveal">STUDIO</div>
+      <div class="gal-item reveal">BOXING</div>
+      <div class="gal-item reveal">RECOVERY</div>
+    </div>
+  </section>
+
+  <section class="section stripe" id="lead">
+    <div class="container text-center reveal" style="text-align:center;">
+      <h2 class="font-bebas" style="font-size:clamp(2.2rem,5vw,3.5rem);color:var(--white);margin-bottom:0.75rem;">READY TO OWN THE FLOOR?</h2>
+      <p style="color:var(--muted);max-width:560px;margin:0 auto 1.5rem;">7-day trial · assessment · coach intro. <strong style="color:var(--gold);">+91 73535 77774</strong></p>
+      <div style="display:flex;flex-wrap:wrap;gap:0.75rem;justify-content:center;">
+        <button type="button" class="btn btn-primary" data-open="join">JOIN NOW</button>
+        <button type="button" class="btn btn-outline" data-open="trial">BOOK FREE TRIAL</button>
+        <a class="btn btn-outline" href="https://wa.me/917353577774?text=Hi%20The%20Muscle%20Bee%20Fitness%2C%20I%27d%20like%20to%20know%20more." target="_blank" rel="noopener">WHATSAPP</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section container" id="contact">
+    <div class="section-head reveal"><h2>CONTACT</h2><p>Book a walk-in, ask for plans, or message us instantly.</p></div>
+    <div class="contact-grid">
+      <div class="reveal">
+        <div class="glass glow-border card-pad" style="margin-bottom:1rem;text-align:center;">
+          <img src="gym.png" alt="The Muscle Bee Fitness" style="max-width:160px;height:auto;margin-bottom:1rem;filter:drop-shadow(0 0 20px rgba(255,204,0,0.45));">
+          <p class="font-oswald" style="color:var(--gold);letter-spacing:0.15em;font-size:0.8rem;">CALL / WHATSAPP</p>
+          <a href="tel:+917353577774" class="font-bebas" style="font-size:2rem;color:var(--white);text-decoration:none;display:block;margin:0.5rem 0;">73535 77774</a>
+          <a class="btn btn-primary" style="width:100%;margin-top:0.5rem;" href="https://wa.me/917353577774?text=Hi%20Muscle%20Bee%2C%20I%20have%20an%20enquiry." target="_blank" rel="noopener">CHAT ON WHATSAPP</a>
+        </div>
+        <div class="glass card-pad glow-border">
+          <p style="color:var(--muted);font-size:0.95rem;"><strong style="color:var(--gold);">Address</strong><br>JP Nagar 7th Phase, Bangalore, KA 560078</p>
+          <p style="color:var(--muted);margin-top:1rem;font-size:0.95rem;"><strong style="color:var(--gold);">Hours</strong><br>6:00 AM – 11:00 PM daily</p>
+        </div>
+      </div>
+      <div class="glass glow-border card-pad reveal">
+        <h3 class="font-bebas" style="font-size:1.75rem;margin-bottom:1rem;color:var(--gold);">SEND ENQUIRY</h3>
+        <form id="contact-form-el" onsubmit="return mbContact(event)">
+          <div class="grid-2">
+            <div class="field"><label for="cf-name">Full name</label><input id="cf-name" name="name" required placeholder="Your name"></div>
+            <div class="field"><label for="cf-mail">Email</label><input id="cf-mail" name="email" type="email" required placeholder="you@email.com"></div>
+          </div>
+          <div class="field"><label for="cf-phone">Phone</label><input id="cf-phone" name="phone" type="tel" required placeholder="73535 77774" value="7353577774"></div>
+          <div class="field"><label for="cf-sub">Subject</label>
+            <select id="cf-sub" name="sub" required>
+              <option value="">Select…</option>
+              <option>Membership</option>
+              <option>Personal training</option>
+              <option>Classes</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="field"><label for="cf-msg">Message</label><textarea id="cf-msg" name="msg" rows="4" required placeholder="Tell us your goal…"></textarea></div>
+          <button type="submit" class="btn btn-primary" style="width:100%;">SUBMIT INQUIRY</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container foot-grid">
+      <div>
+        <div class="foot-logo"><img src="gym.png" alt="The Muscle Bee Fitness logo"></div>
+        <p style="color:var(--muted);font-size:0.9rem;max-width:280px;">The Muscle Bee Fitness — premium black &amp; gold training floor in JP Nagar, Bangalore.</p>
+        <p style="margin-top:1rem;"><a href="tel:+917353577774" style="color:var(--gold);font-family:Oswald,sans-serif;font-size:1.1rem;letter-spacing:0.06em;">+91 73535 77774</a></p>
+      </div>
+      <div>
+        <h4 class="font-oswald" style="color:var(--gold);letter-spacing:0.12em;font-size:0.85rem;margin-bottom:0.75rem;">EXPLORE</h4>
+        <ul style="list-style:none;color:var(--muted);font-size:0.9rem;line-height:2;">
+          <li><a href="#about">About</a></li><li><a href="#services">Services</a></li><li><a href="#classes">Classes</a></li><li><a href="#membership">Membership</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="font-oswald" style="color:var(--gold);letter-spacing:0.12em;font-size:0.85rem;margin-bottom:0.75rem;">CLUB</h4>
+        <ul style="list-style:none;color:var(--muted);font-size:0.9rem;line-height:2;">
+          <li><a href="#trainers">Trainers</a></li><li><a href="#testimonials">Reviews</a></li><li><a href="#gallery">Gallery</a></li><li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="font-oswald" style="color:var(--gold);letter-spacing:0.12em;font-size:0.85rem;margin-bottom:0.75rem;">SOCIAL</h4>
+        <p style="color:var(--muted);font-size:0.9rem;">Instagram · YouTube · Facebook</p>
+        <form onsubmit="return mbNews(event)" style="margin-top:1rem;display:flex;gap:0.5rem;flex-wrap:wrap;">
+          <input type="email" name="nl" required placeholder="Newsletter email" style="flex:1;min-width:140px;">
+          <button type="submit" class="btn btn-primary">JOIN</button>
+        </form>
+      </div>
+    </div>
+    <p style="text-align:center;color:#555;font-size:0.8rem;margin-top:2rem;">© 2026 The Muscle Bee Fitness. All rights reserved.</p>
+  </footer>
+
+  <a class="wa-float" href="https://wa.me/917353577774?text=Hi%20The%20Muscle%20Bee%20Fitness" target="_blank" rel="noopener" aria-label="WhatsApp" title="WhatsApp">💬</a>
+
+  <div class="sticky-cta">
+    <a class="btn btn-primary" href="tel:+917353577774">CALL</a>
+    <button type="button" class="btn btn-outline" data-open="trial">TRIAL</button>
+    <a class="btn btn-outline" href="https://wa.me/917353577774" target="_blank" rel="noopener">WA</a>
+  </div>
+
+  <div class="modal-overlay" id="modal-join" role="dialog" aria-modal="true">
+    <div class="glass modal-box glow-border">
+      <button type="button" class="modal-close" data-close="join" aria-label="Close">×</button>
+      <h3 class="font-bebas" style="font-size:2rem;color:var(--gold);margin-bottom:0.5rem;">JOIN THE HIVE</h3>
+      <p style="color:var(--muted);font-size:0.9rem;margin-bottom:1rem;">We’ll call you within hours. Prefer instant answers? <a href="tel:+917353577774" style="color:var(--gold);">73535 77774</a></p>
+      <form onsubmit="return mbJoin(event)">
+        <div class="field"><label>Name</label><input required placeholder="Full name"></div>
+        <div class="field"><label>Email</label><input type="email" required placeholder="Email"></div>
+        <div class="field"><label>Phone</label><input type="tel" required placeholder="73535 77774" value="7353577774"></div>
+        <div class="field"><label>Plan</label>
+          <select required><option value="">Select plan</option><option>Basic ₹2,999</option><option>Pro ₹4,999</option><option>Elite ₹7,999</option></select>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%;">SUBMIT</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modal-trial" role="dialog" aria-modal="true">
+    <div class="glass modal-box glow-border">
+      <button type="button" class="modal-close" data-close="trial" aria-label="Close">×</button>
+      <h3 class="font-bebas" style="font-size:2rem;color:var(--gold);margin-bottom:0.5rem;">FREE 7-DAY TRIAL</h3>
+      <p style="color:var(--muted);font-size:0.9rem;margin-bottom:1rem;">Book your slot — mention a preferred date. Hotline: <a href="tel:+917353577774" style="color:var(--gold);">73535 77774</a></p>
+      <form onsubmit="return mbTrial(event)">
+        <div class="field"><label>Name</label><input required placeholder="Full name"></div>
+        <div class="field"><label>Email</label><input type="email" required placeholder="Email"></div>
+        <div class="field"><label>Phone</label><input type="tel" required placeholder="73535 77774" value="7353577774"></div>
+        <div class="field"><label>Preferred date</label><input type="date" required></div>
+        <button type="submit" class="btn btn-primary" style="width:100%;">BOOK TRIAL</button>
+      </form>
+    </div>
+  </div>
+
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"LocalBusiness","name":"The Muscle Bee Fitness","image":"gym.png","telephone":"+91-73535-77774","address":{"@type":"PostalAddress","streetAddress":"JP Nagar 7th Phase","addressLocality":"Bangalore","addressRegion":"KA","postalCode":"560078","addressCountry":"IN"}}
+  </script>
+
+  <script>
+    (function () {
+      var loader = document.getElementById('loader');
+      window.addEventListener('load', function () {
+        setTimeout(function () { loader.classList.add('hide'); }, 400);
+      });
+      var particles = document.getElementById('particles');
+      for (var i = 0; i < 45; i++) {
+        var p = document.createElement('div');
+        p.className = 'particle';
+        p.style.left = Math.random() * 100 + '%';
+        p.style.top = Math.random() * 100 + '%';
+        p.style.animationDelay = Math.random() * 8 + 's';
+        p.style.animationDuration = 10 + Math.random() * 10 + 's';
+        particles.appendChild(p);
+      }
+      var nav = document.getElementById('navbar');
+      window.addEventListener('scroll', function () {
+        nav.classList.toggle('scrolled', window.scrollY > 40);
+        var h = document.documentElement;
+        var pct = h.scrollHeight - h.clientHeight > 0 ? h.scrollTop / (h.scrollHeight - h.clientHeight) * 100 : 0;
+        document.getElementById('scroll-progress').style.width = pct + '%';
+      });
+      var drawer = document.getElementById('drawer');
+      document.getElementById('menu-open').addEventListener('click', function () {
+        drawer.classList.add('open');
+        drawer.setAttribute('aria-hidden', 'false');
+      });
+      drawer.addEventListener('click', function (e) {
+        if (e.target === drawer) { drawer.classList.remove('open'); drawer.setAttribute('aria-hidden', 'true'); }
+      });
+      drawer.querySelectorAll('a').forEach(function (a) {
+        a.addEventListener('click', function () {
+          drawer.classList.remove('open');
+          drawer.setAttribute('aria-hidden', 'true');
+        });
+      });
+
+      function openModal(id) {
+        var m = document.getElementById(id);
+        if (m) { m.classList.add('show'); document.body.style.overflow = 'hidden'; }
+      }
+      function closeModal(id) {
+        var m = document.getElementById(id);
+        if (m) { m.classList.remove('show'); document.body.style.overflow = ''; }
+      }
+      document.querySelectorAll('[data-open="join"]').forEach(function (el) {
+        el.addEventListener('click', function () { openModal('modal-join'); });
+      });
+      document.querySelectorAll('[data-open="trial"]').forEach(function (el) {
+        el.addEventListener('click', function () { openModal('modal-trial'); });
+      });
+      document.querySelectorAll('[data-close="join"]').forEach(function (el) {
+        el.addEventListener('click', function () { closeModal('modal-join'); });
+      });
+      document.querySelectorAll('[data-close="trial"]').forEach(function (el) {
+        el.addEventListener('click', function () { closeModal('modal-trial'); });
+      });
+      document.getElementById('modal-join').addEventListener('click', function (e) { if (e.target === this) closeModal('modal-join'); });
+      document.getElementById('modal-trial').addEventListener('click', function (e) { if (e.target === this) closeModal('modal-trial'); });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') { closeModal('modal-join'); closeModal('modal-trial'); }
+      });
+
+      var hero = document.getElementById('hero-visual-el');
+      if (hero) {
+        hero.addEventListener('mousemove', function (e) {
+          var r = hero.getBoundingClientRect();
+          var x = (e.clientX - r.left) / r.width - 0.5;
+          var y = (e.clientY - r.top) / r.height - 0.5;
+          hero.style.transform = 'perspective(1000px) rotateY(' + (x * 5) + 'deg) rotateX(' + (-y * 4) + 'deg) scale(1.02)';
+        });
+        hero.addEventListener('mouseleave', function () { hero.style.transform = ''; });
+      }
+
+      var reveals = document.querySelectorAll('.reveal');
+      var io = new IntersectionObserver(function (ents) {
+        ents.forEach(function (en) {
+          if (en.isIntersecting) en.target.classList.add('visible');
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+      reveals.forEach(function (el) { io.observe(el); });
+
+      var statBlocks = document.querySelectorAll('.hero-stats strong[data-count]');
+      var heroIo = new IntersectionObserver(function (ents) {
+        ents.forEach(function (en) {
+          if (!en.isIntersecting) return;
+          heroIo.disconnect();
+          statBlocks.forEach(function (s) {
+            var target = parseInt(s.getAttribute('data-count'), 10);
+            var dur = 1400;
+            var t0 = null;
+            function tick(ts) {
+              if (!t0) t0 = ts;
+              var p = Math.min((ts - t0) / dur, 1);
+              var ease = 1 - Math.pow(1 - p, 3);
+              var cur = Math.round(target * ease);
+              if (target >= 1000) s.textContent = (cur >= 1000 ? cur.toLocaleString('en-IN') : String(cur)) + '+';
+              else s.textContent = String(cur) + '+';
+              if (p < 1) requestAnimationFrame(tick);
+              else {
+                if (target >= 1000) s.textContent = target.toLocaleString('en-IN') + '+';
+                else s.textContent = String(target) + '+';
+              }
+            }
+            requestAnimationFrame(tick);
+          });
+        });
+      }, { threshold: 0.3 });
+      var hs = document.querySelector('.hero-stats');
+      if (hs) heroIo.observe(hs);
+
+      var links = document.querySelectorAll('.nav-links a[href^="#"]');
+      var sectionIds = ['home', 'why', 'about', 'services', 'classes', 'trainers', 'membership', 'testimonials', 'gallery', 'lead', 'contact'];
+      function setActive() {
+        var y = window.scrollY + 160;
+        var current = 'home';
+        sectionIds.forEach(function (sid) {
+          var el = document.getElementById(sid);
+          if (el && el.offsetTop <= y) current = sid;
+        });
+        links.forEach(function (a) {
+          a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+        });
+      }
+      window.addEventListener('scroll', setActive);
+      setActive();
+    })();
+
+    function mbJoin(e) {
+      e.preventDefault();
+      alert('Thanks — our team will call you on 73535 77774 shortly.');
+      document.getElementById('modal-join').classList.remove('show');
+      document.body.style.overflow = '';
+      return false;
+    }
+    function mbTrial(e) {
+      e.preventDefault();
+      alert('Trial request received. Confirm via WhatsApp: 73535 77774');
+      document.getElementById('modal-trial').classList.remove('show');
+      document.body.style.overflow = '';
+      return false;
+    }
+    function mbContact(e) {
+      e.preventDefault();
+      alert('Message captured. For instant reply WhatsApp 73535 77774');
+      e.target.reset();
+      document.getElementById('cf-phone').value = '7353577774';
+      return false;
+    }
+    function mbNews(e) {
+      e.preventDefault();
+      alert('Subscribed. Stay strong.');
+      e.target.reset();
+      return false;
+    }
+  </script>
+</body>
+</html>
